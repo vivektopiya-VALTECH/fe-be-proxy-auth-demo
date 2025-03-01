@@ -1,0 +1,48 @@
+services:
+  keycloak:
+    image: bitnami/keycloak:latest
+    container_name: keycloak
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=password
+      - KEYCLOAK_DATABASE_HOST=postgres
+      - KEYCLOAK_DATABASE_PORT=5432
+      - KEYCLOAK_DATABASE_NAME=keycloak
+      - KEYCLOAK_DATABASE_USER=keycloak
+      - KEYCLOAK_DATABASE_PASSWORD=keycloak
+      - KEYCLOAK_EXTRA_ARGS=-Dkeycloak.import=/opt/keycloak/data/import/realm-export.json
+    volumes:
+      - ./keycloak_data:/opt/keycloak/data
+      - ./themes:/opt/keycloak/themes
+      - ./providers:/opt/keycloak/providers
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - keycloak-network
+
+  postgres:
+    image: postgres:17.4
+    container_name: keycloak-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - keycloak-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  keycloak-network:
+    driver: bridge
