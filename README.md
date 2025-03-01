@@ -33,7 +33,7 @@ Preconfigured users for keycloak
 | User name | Password | Remarks                            |
 |-----------|----------|------------------------------------|
 | admin     | password | admin user for keycloak            |
-| batmab    | robin    | normal user for valtech-gmbh realm |
+| batman    | robin    | normal user for valtech-gmbh realm |
 
 ```shell
 cd docker
