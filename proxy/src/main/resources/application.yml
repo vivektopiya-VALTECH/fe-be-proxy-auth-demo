@@ -1,0 +1,32 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: proxy
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+      routes:
+        - id: vehicle-api
+          uri: http://localhost:9091
+          predicates:
+            - Path=/api/v1/vehicle**
+
+
+spring.security.oauth2:
+  resourceserver:
+    jwt:
+      jwk-set-uri: http://localhost:8080/realms/valtech-gmbh/protocol/openid-connect/certs
+  client:
+    provider:
+      keycloak:
+        issuer-uri: http://localhost:8080/realms/valtech-gmbh
+    registration:
+      valetch-app:
+        provider: keycloak
+        client-id: valetch-app
+        client-secret: EUsYhP67kKbRObVQ0zRNVddQGsxtb9ow
+        authorization-grant-type: authorization_code
+        scope: openid

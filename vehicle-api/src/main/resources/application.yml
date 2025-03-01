@@ -1,0 +1,11 @@
+server:
+  port: 9091
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/valtech-gmbh/protocol/openid-connect/certs
+  application:
+    name: vehicle-api
